@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET 4_5", "NET 4_5", "{6BD3EB98-1131-4395-9C7D-8B4CC996D2DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET 4_5_1", "NET 4_5_1", "{AFB1C3DC-1A75-456B-9DE5-E6E7D02D7B49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sannel.SVGHandler", "NET 4_5\Sannel.SVGHandler\Sannel.SVGHandler.csproj", "{75E24787-2082-45F3-8D93-5C53C09722E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{351B0549-7DCE-45CA-8A96-D0E207FCC88B}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sannel.SVGHandler.Tests", "NET 4_5\Sannel.SVGHandler.Tests\Sannel.SVGHandler.Tests.csproj", "{6EE79937-71A2-4628-8327-CD9716ED4341}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75E24787-2082-45F3-8D93-5C53C09722E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75E24787-2082-45F3-8D93-5C53C09722E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75E24787-2082-45F3-8D93-5C53C09722E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75E24787-2082-45F3-8D93-5C53C09722E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EE79937-71A2-4628-8327-CD9716ED4341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EE79937-71A2-4628-8327-CD9716ED4341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EE79937-71A2-4628-8327-CD9716ED4341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EE79937-71A2-4628-8327-CD9716ED4341}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{75E24787-2082-45F3-8D93-5C53C09722E4} = {6BD3EB98-1131-4395-9C7D-8B4CC996D2DD}
+		{6EE79937-71A2-4628-8327-CD9716ED4341} = {6BD3EB98-1131-4395-9C7D-8B4CC996D2DD}
+	EndGlobalSection
+EndGlobal
