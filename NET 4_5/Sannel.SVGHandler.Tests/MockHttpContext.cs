@@ -14,54 +14,73 @@
 */
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Sannel.Helpers;
 
 namespace Sannel.SVGHandler.Tests
 {
-	public class MockHttpServerUtility : HttpServerUtilityBase, IDisposable
+	public class MockHttpContext : HttpContextBase, IDisposable
 	{
-		private String tmpDirectory;
-
-		public MockHttpServerUtility()
+		public MockHttpRequest MockRequest
 		{
-			Random rand = new Random();
-			tmpDirectory = Path.Combine(Path.GetTempPath(), rand.NextString(5, 6, "qwertyuiopasdfghjklzxcvbnm"));
-			Directory.CreateDirectory(tmpDirectory);
+			get;
+			set;
 		}
 
-		public override string MapPath(string path)
+		public MockHttpResponse MockResponse
 		{
-			if(path == null)
+			get;
+			set;
+		}
+
+		public MockHttpServerUtility MockServer
+		{
+			get;
+			set;
+		}
+
+		public override HttpRequestBase Request
+		{
+			get
 			{
-				throw new ArgumentNullException("path");
+				return MockRequest;
 			}
+		}
 
-			if(path.Length <= 0)
+		public override HttpResponseBase Response
+		{
+			get
 			{
-				throw new ArgumentException("Path must be more then 1 character", "path");
+				return MockResponse;
 			}
+		}
 
-			if(path.IndexOf("~/") != 0)
+		public override HttpServerUtilityBase Server
+		{
+			get
 			{
-				throw new ArgumentException("Path must start with ~/", "path");
+				return MockServer;
 			}
-
-			var ret = Path.Combine(tmpDirectory, path.Substring(2).Replace('/', '\\'));
-
-			return Path.GetFullPath(ret) ;
 		}
 
 		public void Dispose()
 		{
-			// cleanup TempDirectory
-			if (Directory.Exists(tmpDirectory))
+			IDisposable d = MockRequest as IDisposable;
+			if(d != null)
 			{
-				Directory.Delete(tmpDirectory, true);
+				d.Dispose();
+			}
+			d = MockResponse as IDisposable;
+			if(d != null)
+			{
+				d.Dispose();
+			}
+			d = MockServer as IDisposable;
+			if(d != null)
+			{
+				d.Dispose();
 			}
 		}
 	}

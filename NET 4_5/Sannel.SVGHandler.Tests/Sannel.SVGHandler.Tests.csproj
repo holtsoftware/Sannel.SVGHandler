@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sannel.Helpers">
+      <HintPath>..\..\packages\Sannel.Helpers.1.4.0\lib\net45\Sannel.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="Sannel.TestHelpers">
       <HintPath>..\..\packages\Sannel.TestHelpers.1.1.0\lib\net45\Sannel.TestHelpers.dll</HintPath>
     </Reference>
@@ -54,6 +57,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MockHttpContext.cs" />
     <Compile Include="MockHttpRequest.cs" />
     <Compile Include="MockHttpResponse.cs" />
     <Compile Include="MockHttpServerUtility.cs" />
@@ -62,6 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sannel.SVGHandler\Sannel.SVGHandler.csproj">
+      <Project>{75e24787-2082-45f3-8d93-5c53c09722e4}</Project>
+      <Name>Sannel.SVGHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

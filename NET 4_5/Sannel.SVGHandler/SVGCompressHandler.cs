@@ -14,6 +14,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,17 +26,23 @@ namespace Sannel.Web
 	{
 		public bool IsReusable
 		{
-			get { throw new NotImplementedException(); }
+			get { return true; }
 		}
 
 		public void ProcessRequest(HttpContext context)
 		{
-			throw new NotImplementedException();
+			ProcessRequest(new HttpContextWrapper(context));
 		}
 
 		public void ProcessRequest(HttpContextBase context)
 		{
-
+			var path = context.Request.Url.GetComponents(UriComponents.Path, UriFormat.Unescaped);
+			path = String.Concat("~/", path);
+			path = Path.ChangeExtension(path, ".svg");
+			var filePath = context.Server.MapPath(path);
+			context.Response.ContentType = "image/svg+xml";
+			context.Response.StatusCode = 200;
+			context.Response.TransmitFile(filePath);
 		}
 	}
 }

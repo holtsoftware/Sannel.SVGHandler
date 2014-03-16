@@ -16,33 +16,64 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Web;
 using System.IO;
+using Sannel.Web;
 
 namespace Sannel.SVGHandler.Tests
 {
 	[TestClass]
 	public class SVGCompressHandlerTests
 	{
-		protected HttpContextBase getStartContext()
+		protected readonly String SVGImage = @"<?xml version=""1.0"" encoding=""utf-8""?>
+<!DOCTYPE svg PUBLIC ""-//W3C//DTD SVG 1.1//EN"" ""http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"">
+<svg version=""1.1"" id=""Layer_1"" xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" x=""0px"" y=""0px""
+	 width=""16.9px"" height=""16.9px"" viewBox=""0 0 16.9 16.9"" enable-background=""new 0 0 16.9 16.9"" xml:space=""preserve"">
+<path fill=""#242021"" d=""M2.5,16.9l4.4-4.4c0,0,0.1-0.1,0.1-0.1c1,0.6,2.1,0.9,3.3,0.9c1.8,0,3.4-0.7,4.7-1.9
+	c1.3-1.3,1.9-2.9,1.9-4.7S16.2,3.2,15,1.9S12.1,0,10.3,0C8.5,0,6.9,0.7,5.6,1.9c-2.2,2.2-2.5,5.5-1.1,8c0,0-0.1,0.1-0.1,0.1L0,14.5
+	L2.5,16.9z M10.3,11.2c-1.2,0-2.3-0.5-3.2-1.3c-1.8-1.8-1.8-4.6,0-6.4c0.9-0.9,2-1.3,3.2-1.3c1.2,0,2.3,0.5,3.2,1.3
+	c0.9,0.9,1.3,2,1.3,3.2c0,1.2-0.5,2.4-1.3,3.2C12.6,10.7,11.5,11.2,10.3,11.2""/>
+</svg>";
+		protected MockHttpContext getStartContext()
 		{
 			// create server utils
 			var server = new MockHttpServerUtility();
 			// create request utils
 			var request = new MockHttpRequest();
 			// create response utils
+			var response = new MockHttpResponse();
 			// create context
-			// return context
-			return null;
+			var context = new MockHttpContext();
+			context.MockServer = server;
+			context.MockRequest = request;
+			context.MockResponse = response;
+			return context;
 		}
 
 		[TestMethod]
 		public void RequestNoHeadersOrCompressionTest()
 		{
 			// setup context
+			var context = getStartContext();
 			// write svg image to fs
+			var imageFile = context.Server.MapPath("~/Test.svg");
+			context.MockRequest.MockUrl = new Uri("http://localhost/test.svgz");
+			File.WriteAllText(imageFile, SVGImage);
 			// make request to handler
+			SVGCompressHandler handler = new SVGCompressHandler();
+			handler.ProcessRequest(context);
 			// get results
+			String results;
+			context.Response.OutputStream.Position = 0;
+			using(var s = new StreamReader(context.Response.OutputStream))
+			{
+				results = s.ReadToEnd();
+			}
 			// cleanup context
+			context.Dispose();
 			// test results
+			Assert.AreEqual(200, context.Response.StatusCode, "Status code did not match");
+			Assert.AreEqual(0, context.Response.Headers.Keys.Count, "There should be no headers");
+			Assert.AreEqual("image/svg+xml", context.Response.ContentType, "Content Type does not match");
+			Assert.AreEqual(SVGImage, results, "SVG Image did not match");
 		}
 	}
 }

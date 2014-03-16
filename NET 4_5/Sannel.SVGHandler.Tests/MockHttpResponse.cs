@@ -14,6 +14,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,9 +28,16 @@ namespace Sannel.SVGHandler.Tests
 		public MockHttpResponse()
 		{
 			MockOutputStream = new MemoryStream();
+			MockHeaders = new NameValueCollection();
 		}
 
 		public Stream MockOutputStream
+		{
+			get;
+			set;
+		}
+
+		public NameValueCollection MockHeaders
 		{
 			get;
 			set;
@@ -43,7 +51,44 @@ namespace Sannel.SVGHandler.Tests
 			}
 		}
 
+		public override int StatusCode
+		{
+			get;
+			set;
+		}
 
+		public override string ContentType
+		{
+			get;
+			set;
+		}
+
+		public override NameValueCollection Headers
+		{
+			get
+			{
+				return MockHeaders;
+			}
+		}
+
+		public override void TransmitFile(string filename)
+		{
+			if(filename == null)
+			{
+				throw new ArgumentNullException("filename");
+			}
+
+			if(!File.Exists(filename))
+			{
+				throw new FileNotFoundException("File Not Found", filename);
+			}
+
+			using(var file = File.OpenRead(filename))
+			{
+				file.CopyTo(OutputStream);
+				OutputStream.Flush();
+			}
+		}
 
 		public void Dispose()
 		{
