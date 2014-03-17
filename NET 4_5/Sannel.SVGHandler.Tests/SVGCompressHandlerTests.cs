@@ -18,6 +18,7 @@ using System.Web;
 using System.IO;
 using System.IO.Compression;
 using Sannel.Web;
+using Sannel.Helpers;
 
 namespace Sannel.SVGHandler.Tests
 {
@@ -143,7 +144,7 @@ namespace Sannel.SVGHandler.Tests
 			
 			// test results
 			Assert.AreEqual(200, context.Response.StatusCode, "Status code did not match");
-			Assert.AreEqual(1, context.Response.Headers.Keys.Count, "There should be no headers");
+			Assert.AreEqual(1, context.Response.Headers.Keys.Count, "There should be only 1 header");
 			var header = context.Response.Headers["Content-Encoding"];
 			Assert.IsNotNull(header, "Header should not be null");
 			Assert.AreEqual("gzip", header);
@@ -175,7 +176,7 @@ namespace Sannel.SVGHandler.Tests
 
 			// test results
 			Assert.AreEqual(200, context.Response.StatusCode, "Status code did not match");
-			Assert.AreEqual(1, context.Response.Headers.Keys.Count, "There should be no headers");
+			Assert.AreEqual(1, context.Response.Headers.Keys.Count, "There should be only 1 header");
 			var header = context.Response.Headers["Content-Encoding"];
 			Assert.IsNotNull(header, "Header should not be null");
 			Assert.AreEqual("gzip", header);
@@ -207,7 +208,7 @@ namespace Sannel.SVGHandler.Tests
 
 			// test results
 			Assert.AreEqual(200, context.Response.StatusCode, "Status code did not match");
-			Assert.AreEqual(1, context.Response.Headers.Keys.Count, "There should be no headers");
+			Assert.AreEqual(1, context.Response.Headers.Keys.Count, "There should be only 1 header");
 			var header = context.Response.Headers["Content-Encoding"];
 			Assert.IsNotNull(header, "Header should not be null");
 			Assert.AreEqual("deflate", header);
@@ -215,6 +216,32 @@ namespace Sannel.SVGHandler.Tests
 			Assert.AreEqual(SVGImage, results, "SVG Image did not match");
 			// cleanup
 			context.Dispose();
+		}
+
+		[TestMethod]
+		public void Request404Test()
+		{
+			var context = getStartContext();
+			context.Request.Headers.Add("Accept-Encoding", "deflate");
+			// write svg image and svgz image
+			var imageFile = context.Server.MapPath("~/Test.svg");
+			context.MockRequest.MockUrl = new Uri("http://localhost/Test2.svgz");
+			File.WriteAllText(imageFile, SVGImage);
+			// make request to handler
+			SVGCompressHandler.ProcessRequest(context);
+
+			Assert.AreEqual(404, context.Response.StatusCode, "Status code did not match");
+			Assert.AreEqual(0, context.Response.Headers.Count, "There should be no headers");
+			context.Dispose();
+		}
+
+		[TestMethod]
+		public void ExceptionsTest()
+		{
+			AssertHelpers.ThrowsException<ArgumentNullException>(() => { SVGCompressHandler.ProcessRequest(null as HttpContextBase); });
+			var handler = new SVGCompressHandler();
+			AssertHelpers.ThrowsException<ArgumentNullException>(() => { handler.ProcessRequest(null as HttpContext); });
+			Assert.AreEqual(true, handler.IsReusable);
 		}
 	}
 }

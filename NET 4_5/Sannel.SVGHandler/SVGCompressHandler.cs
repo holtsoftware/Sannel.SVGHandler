@@ -69,34 +69,41 @@ namespace Sannel.Web
 				}
 			}
 			path = Path.ChangeExtension(path, ".svg");
-			if (acceptEncoding.Contains("GZIP"))
+			if (File.Exists(path))
 			{
-				SendStandardHeaders(context.Response);
-				SendGZipHeader(context.Response);
-				using (var outStream = new GZipStream(context.Response.OutputStream, CompressionLevel.Optimal))
+				if (acceptEncoding.Contains("GZIP"))
 				{
-					using (var inStream = File.OpenRead(path))
+					SendStandardHeaders(context.Response);
+					SendGZipHeader(context.Response);
+					using (var outStream = new GZipStream(context.Response.OutputStream, CompressionLevel.Optimal))
 					{
-						inStream.CopyTo(outStream);
+						using (var inStream = File.OpenRead(path))
+						{
+							inStream.CopyTo(outStream);
+						}
 					}
 				}
-			}
-			else if (acceptEncoding.Contains("DEFLATE"))
-			{
-				SendStandardHeaders(context.Response);
-				SendDeflateHeader(context.Response);
-				using (var outStream = new DeflateStream(context.Response.OutputStream, CompressionLevel.Optimal))
+				else if (acceptEncoding.Contains("DEFLATE"))
 				{
-					using (var inStream = File.OpenRead(path))
+					SendStandardHeaders(context.Response);
+					SendDeflateHeader(context.Response);
+					using (var outStream = new DeflateStream(context.Response.OutputStream, CompressionLevel.Optimal))
 					{
-						inStream.CopyTo(outStream);
+						using (var inStream = File.OpenRead(path))
+						{
+							inStream.CopyTo(outStream);
+						}
 					}
+				}
+				else
+				{
+					SendStandardHeaders(context.Response);
+					context.Response.TransmitFile(path);
 				}
 			}
 			else
 			{
-				SendStandardHeaders(context.Response);
-				context.Response.TransmitFile(path);
+				context.Response.StatusCode = 404;
 			}
 		}
 
