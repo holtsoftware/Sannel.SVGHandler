@@ -1,4 +1,5 @@
-﻿/* Copyright 2014 Sannel Software, L.L.C.
+﻿using System;
+/* Copyright 2014 Sannel Software, L.L.C.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,5 +35,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("1a2b00a9-38b4-48f7-aeb2-99960e7b74bf")]
+
+[assembly: CLSCompliant(true)]
 
 

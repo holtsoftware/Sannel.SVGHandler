@@ -31,10 +31,15 @@ namespace Sannel.SVGHandler.Tests
 			MockHeaders = new NameValueCollection();
 		}
 
-		public Stream MockOutputStream
+		public MemoryStream MockOutputStream
 		{
 			get;
 			set;
+		}
+
+		public MemoryStream GetCopyOfOutputStream()
+		{
+			return new MemoryStream(MockOutputStream.ToArray());
 		}
 
 		public NameValueCollection MockHeaders

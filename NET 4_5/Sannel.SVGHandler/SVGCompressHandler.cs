@@ -14,8 +14,11 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -31,18 +34,101 @@ namespace Sannel.Web
 
 		public void ProcessRequest(HttpContext context)
 		{
+			if (context == null)
+			{
+				throw new ArgumentNullException("context");
+			}
 			ProcessRequest(new HttpContextWrapper(context));
 		}
 
-		public void ProcessRequest(HttpContextBase context)
+		public static void ProcessRequest(HttpContextBase context)
 		{
+			if (context == null)
+			{
+				throw new ArgumentNullException("context");
+			}
+
+			List<String> acceptEncoding = new List<String>();
+			var ae = context.Request.Headers["Accept-Encoding"];
+			if (!String.IsNullOrWhiteSpace(ae))
+			{
+				acceptEncoding.AddRange(from f in ae.Split(',') select f.ToUpperInvariant());
+			}
+
 			var path = context.Request.Url.GetComponents(UriComponents.Path, UriFormat.Unescaped);
 			path = String.Concat("~/", path);
+			path = context.Server.MapPath(path);
+			if (File.Exists(path))
+			{
+				if (acceptEncoding.Contains("GZIP"))
+				{
+					SendStandardHeaders(context.Response);
+					SendGZipHeader(context.Response);
+					context.Response.TransmitFile(path);
+					return;
+				}
+			}
 			path = Path.ChangeExtension(path, ".svg");
-			var filePath = context.Server.MapPath(path);
-			context.Response.ContentType = "image/svg+xml";
-			context.Response.StatusCode = 200;
-			context.Response.TransmitFile(filePath);
+			if (acceptEncoding.Contains("GZIP"))
+			{
+				SendStandardHeaders(context.Response);
+				SendGZipHeader(context.Response);
+				using (var outStream = new GZipStream(context.Response.OutputStream, CompressionLevel.Optimal))
+				{
+					using (var inStream = File.OpenRead(path))
+					{
+						inStream.CopyTo(outStream);
+					}
+				}
+			}
+			else if (acceptEncoding.Contains("DEFLATE"))
+			{
+				SendStandardHeaders(context.Response);
+				SendDeflateHeader(context.Response);
+				using (var outStream = new DeflateStream(context.Response.OutputStream, CompressionLevel.Optimal))
+				{
+					using (var inStream = File.OpenRead(path))
+					{
+						inStream.CopyTo(outStream);
+					}
+				}
+			}
+			else
+			{
+				SendStandardHeaders(context.Response);
+				context.Response.TransmitFile(path);
+			}
+		}
+
+		protected static void SendGZipHeader(HttpResponseBase response)
+		{
+			if (response == null)
+			{
+				throw new ArgumentNullException("response");
+			}
+
+			response.Headers.Add("Content-Encoding", "gzip");
+		}
+
+		protected static void SendDeflateHeader(HttpResponseBase response)
+		{
+			if (response == null)
+			{
+				throw new ArgumentNullException("response");
+			}
+
+			response.Headers.Add("Content-Encoding", "deflate");
+		}
+
+		protected static void SendStandardHeaders(HttpResponseBase response)
+		{
+			if (response == null)
+			{
+				throw new ArgumentNullException("response");
+			}
+
+			response.ContentType = "image/svg+xml";
+			response.StatusCode = 200;
 		}
 	}
 }
