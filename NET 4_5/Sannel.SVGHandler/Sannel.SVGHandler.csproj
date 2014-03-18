@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Sannel.SVGHandler.pfx" />
+    <None Include="Web.config.transform" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

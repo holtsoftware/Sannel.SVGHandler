@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<system.webServer>
+		<handlers>
+			<add verb="*" name="Sannel.SVGHandler" path="*.svgz" type="Sannel.Web.SVGCompressHandler, Sannel.SVGHandler" />
+		</handlers>
+	</system.webServer>
+</configuration>

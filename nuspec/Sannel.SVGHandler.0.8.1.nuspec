@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Sannel.SVGHandler</id>
+        <version>0.8.1</version>
+        <authors>Sannel Software,L.L.C.</authors>
+        <owners>Sannel Software,L.L.C.</owners>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+        <projectUrl>https://github.com/holtsoftware/Sannel.SVGHandler</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>An http handler that takes request for .svgz looks for an svg and compresses it with gzip or deflate based on request headers. If there is already an svgz  next to the svg and the client supports gzip then the svgz from the file system is sent out.</description>
+        <summary>An Http Handler that compresses svg's into svgz's.</summary>
+        <copyright>Sannel Software, L.L.C.</copyright>
+        <tags>C#,Handlers,svg,svgz</tags>
+    </metadata>
+    <files>
+        <file src="..\NET 4_5\Sannel.SVGHandler\Web.config.transform" target="content\Web.config.transform" />
+        <file src="..\Build\NET 4_5\Sannel.SVGHandler.dll" target="lib\net45\Sannel.SVGHandler.dll" />
+        <file src="..\Build\NET 4_5_1\Sannel.SVGHandler.dll" target="lib\net451\Sannel.SVGHandler.dll" />
+    </files>
+</package>
