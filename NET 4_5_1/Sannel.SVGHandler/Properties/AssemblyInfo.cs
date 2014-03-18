@@ -1,5 +1,4 @@
-﻿using System;
-/* Copyright 2014 Sannel Software, L.L.C.
+﻿/* Copyright 2014 Sannel Software, L.L.C.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -13,6 +12,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -27,14 +27,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1a2b00a9-38b4-48f7-aeb2-99960e7b74bf")]
+[assembly: Guid("91707621-97E3-439B-818F-376512F5525E")]
 
 [assembly: CLSCompliant(true)]
-
-

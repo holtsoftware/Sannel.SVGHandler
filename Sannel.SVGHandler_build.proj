@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<BuildDir>Build</BuildDir>
+		<Configuration>Release</Configuration>
+	</PropertyGroup>
+
+	<Target Name="Build">
+		<RemoveDir Directories="$(BuildDir)" />
+		<MakeDir Directories="$(BuildDir)" />
+		<CallTarget Targets="BuildNET4_5;BuildNET4_5_1" />
+	</Target>
+
+	<Target Name="BuildNET4_5">
+		<PropertyGroup>
+			<Dir>NET 4_5</Dir>
+			<OutputDir>$(BuildDir)\$(Dir)</OutputDir>
+			<MSTest>$(VS120COMNTOOLS)..\IDE\mstest.exe</MSTest>
+		</PropertyGroup>
+
+		<MakeDir Directories="$(OutputDir)" />
+
+		<MSBuild Projects="$(Dir)\Sannel.SVGHandler\Sannel.SVGHandler.csproj;" Properties="Configuration=$(Configuration);OutputPath=..\..\$(OutputDir)" />
+
+		<MSBuild Projects="$(Dir)\Sannel.SVGHandler.Tests\Sannel.SVGHandler.Tests.csproj;" Properties="Configuration=$(Configuration);OutputPath=..\..\$(OutputDir)" />
+
+		<Exec Command="&quot;$(MSTest)&quot; /testcontainer:&quot;$(OutputDir)\Sannel.SVGHandler.Tests.dll&quot;" />
+	</Target>
+
+	<Target Name="BuildNET4_5_1">
+		<PropertyGroup>
+			<Dir>NET 4_5_1</Dir>
+			<OutputDir>$(BuildDir)\$(Dir)</OutputDir>
+			<MSTest>$(VS120COMNTOOLS)..\IDE\mstest.exe</MSTest>
+		</PropertyGroup>
+
+		<MakeDir Directories="$(OutputDir)" />
+
+		<MSBuild Projects="$(Dir)\Sannel.SVGHandler\Sannel.SVGHandler.csproj;" Properties="Configuration=$(Configuration);OutputPath=..\..\$(OutputDir)" />
+
+		<MSBuild Projects="$(Dir)\Sannel.SVGHandler.Tests\Sannel.SVGHandler.Tests.csproj;" Properties="Configuration=$(Configuration);OutputPath=..\..\$(OutputDir)" />
+
+		<Exec Command="&quot;$(MSTest)&quot; /testcontainer:&quot;$(OutputDir)\Sannel.SVGHandler.Tests.dll&quot;" />
+	</Target>
+	
+</Project>

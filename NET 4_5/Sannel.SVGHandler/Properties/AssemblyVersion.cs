@@ -24,5 +24,6 @@
 // [assembly: AssemblyVersion("1.0.*")]
 using System.Reflection;
 [assembly: AssemblyCopyright("Copyright © Sannel Software, L.L.C. 2014")]
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyCompany("Sannel Software, L.L.C.")]
+[assembly: AssemblyVersion("0.8.*")]
+[assembly: AssemblyFileVersion("0.8.0.0")]
