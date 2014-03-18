@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		LICENSE = LICENSE
 		README.md = README.md
-		Sannel.SVGHandler_build.proj = Sannel.SVGHandler_build.proj
+		Sannel.SVGHandler.msbuildproj = Sannel.SVGHandler.msbuildproj
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sannel.SVGHandler.Tests", "NET 4_5\Sannel.SVGHandler.Tests\Sannel.SVGHandler.Tests.csproj", "{6EE79937-71A2-4628-8327-CD9716ED4341}"
